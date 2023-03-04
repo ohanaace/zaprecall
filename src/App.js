@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import Container from "./components/Container";
+import GlobalStyled from "./styled/GlobalStyled"
+import Styled from "./styled/Styled"
+import styled from "styled-components";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ContainerDeck>
+      <GlobalStyled />
+      <Styled />
+      <Container />   
+    </ContainerDeck>
   );
 }
 
 export default App;
+
+
+
+const ContainerDeck = styled.div`
+  width: 375px;
+  height: 667px;
+  border: 1px solid #dbdbdb;
+  background-color: #fb6b6b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 70px;
+  overflow: scroll;
+  position: relative;
+  overflow-x: hidden;
+  ::-webkit-scrollbar{
+    width: 0px;
+  }
+`
