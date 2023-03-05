@@ -5,6 +5,9 @@ import certo from "../assets/icone_certo.png"
 import quase from "../assets/icone_quase.png"
 import errado from "../assets/icone_erro.png"
 import { useState } from "react";
+import Button from "./Button"
+import botoes from "./botoes";
+
 export default function Card({ question, answer, index, perguntasRespondidas, setPerguntasRespondidas }) {
     const [icone, setIcone] = useState(play)
     const [setaVirada, setSetaVirada] = useState(false)
@@ -36,17 +39,17 @@ export default function Card({ question, answer, index, perguntasRespondidas, se
         setRespondida(true)
         setEnunciado(`Pergunta ${index}`)
         setPerguntasRespondidas([...perguntasRespondidas, index])
-        if (resposta === "acertou") {
+        if (resposta === "Zap!") {
             setDataTestImg("zap-icon")
             setIcone(certo)
             setCorDoTexto("#2FBE34")
         }
-        if (resposta === "quase") {
+        if (resposta === "Quase não lembrei") {
             setDataTestImg("partial-icon")
             setIcone(quase)
             setCorDoTexto("#FF922E")
         }
-        if(resposta === "errou"){
+        if(resposta === "Não lembrei"){
             setDataTestImg("no-icon")
             setIcone(errado)
             setCorDoTexto("#FF3030")
@@ -58,14 +61,11 @@ export default function Card({ question, answer, index, perguntasRespondidas, se
             <p data-test={"flashcard-text"} >{enunciado}</p>
             <img src={icone} data-test={dataTestImg} onClick={mostrarPergunta} alt="seta" />
             <Botoes setaVirada={setaVirada} ocultar={ocultar} >
-                <Botao cor={"#FF3030"} data-test={"no-btn"} onClick={() => responderPergunta("errou")} > Não lembrei</Botao>
-                <Botao cor={"#FF922E"} data-test={"partial-btn"} onClick={() => responderPergunta("quase")} > Quase não lembrei</Botao>
-                <Botao cor={"#2FBE34"} data-test={"zap-btn"} onClick={() => responderPergunta("acertou")} > Zap!</Botao>
+              {botoes.map((b) => <Button cor={b.cor} data-test={b.dataTest} onClick={() => responderPergunta(b.texto)} texto={b.texto}/>)}
             </Botoes>
         </Pergunta>
     )
 }
-
 const Pergunta = styled.div`
     width: 350px;
     height: auto;
@@ -99,22 +99,4 @@ const Botoes = styled.div`
     visibility: ${props => props.ocultar ? "initial" : "hidden"};
     margin-top: 20px;
 
-`
-const Botao = styled.button`
-    width: 86px;
-    height: 37px;
-    color: #ffffff;
-    font-weight: 400;
-    font-family: 'Recursive';
-    font-size: 12px;
-    background-color: ${props => props.cor};
-    padding: 7px;
-    border-radius: 5px;
-    border-style: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    :hover{
-        cursor: pointer;
-    }
 `
