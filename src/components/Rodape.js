@@ -1,9 +1,9 @@
 import styled from "styled-components"
 
-export default function Rodape() {
+export default function Rodape({perguntasRespondidas, totalDePerguntas}) {
     return (
         <Footer >
-            <p data-test="footer"> 0/8 CONCLUÍDOS</p>
+            <p data-test="footer"> {perguntasRespondidas.length}/{totalDePerguntas} CONCLUÍDOS</p>
         </Footer>
     )
 }

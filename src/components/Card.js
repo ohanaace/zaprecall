@@ -8,32 +8,71 @@ import { useState } from "react";
 
 
 
-export default function Card({question, answer, index}){
-    const [seta, setSeta] = useState(play)
+export default function Card({question, answer, index, perguntasRespondidas, setPerguntasRespondidas}){
+    const [icone, setIcone] = useState(play)
     const [setaVirada, setSetaVirada] = useState(false)
+    const [ocultar, setOcultar] = useState(false)
     const [enunciado, setEnunciado] = useState("Pergunta " + index)
     const [respondida, setRespondida] = useState(false)
+    const [dataTestImg, setDataTestImg] = useState("play-btn")
+    const [corDoTexto, setCorDoTexto] = useState("#000000")
     function mostrarPergunta(){
-        setSeta(virar);
+        if(respondida){
+            return
+        }
+        setIcone(virar)
         setSetaVirada(true)
+        setDataTestImg("turn-btn")
         setEnunciado(question)
-        if(seta === virar){
+        if(icone === virar){
             mostrarResposta()
         }
     }
     function mostrarResposta(){
         setEnunciado(answer)
+        setOcultar(true)
+       
+    }
+    function naoLembrei(){
+        setDataTestImg("no-icon")
+        setIcone(errado)
+        setEnunciado(`Pergunta ${index}`)
+        setOcultar(false)
+        setSetaVirada(false)
         setRespondida(true);
+        setCorDoTexto("#FF3030")
+        setPerguntasRespondidas([...perguntasRespondidas, index])
+
+    }
+    function quaseNaoLembrei(){
+        setDataTestImg("partial-icon")
+        setIcone(quase)
+        setEnunciado(`Pergunta ${index}`)
+        setOcultar(false)
+        setSetaVirada(false)
+        setRespondida(true)
+        setCorDoTexto("#FF922E")
+        setPerguntasRespondidas([...perguntasRespondidas, index])
+    }
+    function zap(){
+        setDataTestImg("zap-icon")
+        setIcone(certo)
+        setEnunciado(`Pergunta ${index}`)
+        setOcultar(false)
+        setSetaVirada(false)
+        setRespondida(true);
+        setCorDoTexto("#2FBE34")
+        setPerguntasRespondidas([...perguntasRespondidas, index])
     }
 
     return (
-        <Pergunta setaVirada={setaVirada} respondida={respondida} data-test={"flashcard"} >
-            <p data-test={"flashcard-text"}>{enunciado}</p>
-            <img src={seta} data-test={"play-btn"} onClick={mostrarPergunta} alt="seta"/>
-            <Botoes setaVirada={setaVirada} respondida={respondida}>
-                <Botao cor={"#FF3030"} data-test={"no-btn"}> Não lembrei</Botao>
-                <Botao cor={"#FF922E"} data-test={"partial-btn"}> Quase não lembrei</Botao>
-                <Botao cor={"#2FBE34"} data-test={"zap-btn"}> Zap!</Botao>
+        <Pergunta setaVirada={setaVirada} corDoTexto={corDoTexto} respondida={respondida}  ocultar={ocultar} data-test={"flashcard"} >
+            <p data-test={"flashcard-text"} >{enunciado}</p>
+            <img src={icone} data-test={dataTestImg} onClick={mostrarPergunta} alt="seta"/>
+            <Botoes setaVirada={setaVirada} ocultar={ocultar} >
+                <Botao cor={"#FF3030"} data-test={"no-btn"} onClick={naoLembrei} > Não lembrei</Botao>
+                <Botao cor={"#FF922E"} data-test={"partial-btn"} onClick={quaseNaoLembrei} > Quase não lembrei</Botao>
+                <Botao cor={"#2FBE34"} data-test={"zap-btn"} onClick={zap} > Zap!</Botao>
             </Botoes>
         </Pergunta>
     )
@@ -41,7 +80,6 @@ export default function Card({question, answer, index}){
 
 const Pergunta = styled.div`
     width: 350px;
-    /*height: ${props => props.setaVirada ? "130px" : "65px"};*/
     height: auto;
     background-color: #ffffff;
     border-radius: 5px;
@@ -53,7 +91,7 @@ const Pergunta = styled.div`
     justify-content: space-between;
     align-items: center;
     img{
-        display: ${props => props.respondida? "none" : "initial"};
+        display: ${props => props.ocultar? "none" : "initial"};
         width: 20px;
         height: 23px;
     }
@@ -62,13 +100,15 @@ const Pergunta = styled.div`
         font-style: normal;
         font-weight: 700;
         font-size: 16px;
+        text-decoration: ${props => props.respondida? "line-through" : "none"};
+        color: ${props => props.corDoTexto};
     }
 `
 const Botoes = styled.div`
     width: 275px;
     display: ${props => props.setaVirada? "flex" : "none"};
     justify-content: space-between;
-    visibility: ${props => props.respondida? "initial" : "hidden"};
+    visibility: ${props => props.ocultar? "initial" : "hidden"};
     margin-top: 20px;
 
 `
@@ -82,9 +122,13 @@ const Botao = styled.button`
     background-color: ${props => props.cor};
     padding: 7px;
     border-radius: 5px;
+    border-style: none;
     display: flex;
     justify-content: center;
     align-items: center;
+    :hover{
+        cursor: pointer;
+    }
     
 
 `
