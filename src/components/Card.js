@@ -5,10 +5,7 @@ import certo from "../assets/icone_certo.png"
 import quase from "../assets/icone_quase.png"
 import errado from "../assets/icone_erro.png"
 import { useState } from "react";
-
-
-
-export default function Card({question, answer, index, perguntasRespondidas, setPerguntasRespondidas}){
+export default function Card({ question, answer, index, perguntasRespondidas, setPerguntasRespondidas }) {
     const [icone, setIcone] = useState(play)
     const [setaVirada, setSetaVirada] = useState(false)
     const [ocultar, setOcultar] = useState(false)
@@ -16,63 +13,54 @@ export default function Card({question, answer, index, perguntasRespondidas, set
     const [respondida, setRespondida] = useState(false)
     const [dataTestImg, setDataTestImg] = useState("play-btn")
     const [corDoTexto, setCorDoTexto] = useState("#000000")
-    function mostrarPergunta(){
-        if(respondida){
+    function mostrarPergunta() {
+        if (respondida) {
             return
         }
         setIcone(virar)
         setSetaVirada(true)
         setDataTestImg("turn-btn")
         setEnunciado(question)
-        if(icone === virar){
+        if (icone === virar) {
             mostrarResposta()
         }
     }
-    function mostrarResposta(){
+    function mostrarResposta() {
         setEnunciado(answer)
         setOcultar(true)
-       
-    }
-    function naoLembrei(){
-        setDataTestImg("no-icon")
-        setIcone(errado)
-        setEnunciado(`Pergunta ${index}`)
-        setOcultar(false)
-        setSetaVirada(false)
-        setRespondida(true);
-        setCorDoTexto("#FF3030")
-        setPerguntasRespondidas([...perguntasRespondidas, index])
 
     }
-    function quaseNaoLembrei(){
-        setDataTestImg("partial-icon")
-        setIcone(quase)
-        setEnunciado(`Pergunta ${index}`)
+    function responderPergunta(resposta) {
         setOcultar(false)
         setSetaVirada(false)
         setRespondida(true)
-        setCorDoTexto("#FF922E")
-        setPerguntasRespondidas([...perguntasRespondidas, index])
-    }
-    function zap(){
-        setDataTestImg("zap-icon")
-        setIcone(certo)
         setEnunciado(`Pergunta ${index}`)
-        setOcultar(false)
-        setSetaVirada(false)
-        setRespondida(true);
-        setCorDoTexto("#2FBE34")
         setPerguntasRespondidas([...perguntasRespondidas, index])
+        if (resposta === "acertou") {
+            setDataTestImg("zap-icon")
+            setIcone(certo)
+            setCorDoTexto("#2FBE34")
+        }
+        if (resposta === "quase") {
+            setDataTestImg("partial-icon")
+            setIcone(quase)
+            setCorDoTexto("#FF922E")
+        }
+        if(resposta === "errou"){
+            setDataTestImg("no-icon")
+            setIcone(errado)
+            setCorDoTexto("#FF3030")
+        }
     }
 
     return (
-        <Pergunta setaVirada={setaVirada} corDoTexto={corDoTexto} respondida={respondida}  ocultar={ocultar} data-test={"flashcard"} >
+        <Pergunta setaVirada={setaVirada} corDoTexto={corDoTexto} respondida={respondida} ocultar={ocultar} data-test={"flashcard"} >
             <p data-test={"flashcard-text"} >{enunciado}</p>
-            <img src={icone} data-test={dataTestImg} onClick={mostrarPergunta} alt="seta"/>
+            <img src={icone} data-test={dataTestImg} onClick={mostrarPergunta} alt="seta" />
             <Botoes setaVirada={setaVirada} ocultar={ocultar} >
-                <Botao cor={"#FF3030"} data-test={"no-btn"} onClick={naoLembrei} > Não lembrei</Botao>
-                <Botao cor={"#FF922E"} data-test={"partial-btn"} onClick={quaseNaoLembrei} > Quase não lembrei</Botao>
-                <Botao cor={"#2FBE34"} data-test={"zap-btn"} onClick={zap} > Zap!</Botao>
+                <Botao cor={"#FF3030"} data-test={"no-btn"} onClick={() => responderPergunta("errou")} > Não lembrei</Botao>
+                <Botao cor={"#FF922E"} data-test={"partial-btn"} onClick={() => responderPergunta("quase")} > Quase não lembrei</Botao>
+                <Botao cor={"#2FBE34"} data-test={"zap-btn"} onClick={() => responderPergunta("acertou")} > Zap!</Botao>
             </Botoes>
         </Pergunta>
     )
@@ -91,7 +79,7 @@ const Pergunta = styled.div`
     justify-content: space-between;
     align-items: center;
     img{
-        display: ${props => props.ocultar? "none" : "initial"};
+        display: ${props => props.ocultar ? "none" : "initial"};
         width: 20px;
         height: 23px;
     }
@@ -100,15 +88,15 @@ const Pergunta = styled.div`
         font-style: normal;
         font-weight: 700;
         font-size: 16px;
-        text-decoration: ${props => props.respondida? "line-through" : "none"};
+        text-decoration: ${props => props.respondida ? "line-through" : "none"};
         color: ${props => props.corDoTexto};
     }
 `
 const Botoes = styled.div`
     width: 275px;
-    display: ${props => props.setaVirada? "flex" : "none"};
+    display: ${props => props.setaVirada ? "flex" : "none"};
     justify-content: space-between;
-    visibility: ${props => props.ocultar? "initial" : "hidden"};
+    visibility: ${props => props.ocultar ? "initial" : "hidden"};
     margin-top: 20px;
 
 `
@@ -129,6 +117,4 @@ const Botao = styled.button`
     :hover{
         cursor: pointer;
     }
-    
-
 `
