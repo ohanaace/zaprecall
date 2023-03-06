@@ -52,6 +52,7 @@ export default function Card({ question, answer, index, perguntasRespondidas, se
             setIcone(certo)
             setCorDoTexto("#2FBE34")
         }
+        
     }
 
     return (
