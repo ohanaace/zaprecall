@@ -5,9 +5,8 @@ import certo from "../assets/icone_certo.png"
 import quase from "../assets/icone_quase.png"
 import errado from "../assets/icone_erro.png"
 import { useState } from "react";
-import Button from "./Button"
-import botoes from "./botoes";
-
+import Button from "./Button";
+import botoes from "./botoes"
 export default function Card({ question, answer, index, perguntasRespondidas, setPerguntasRespondidas }) {
     const [icone, setIcone] = useState(play)
     const [setaVirada, setSetaVirada] = useState(false)
@@ -31,7 +30,6 @@ export default function Card({ question, answer, index, perguntasRespondidas, se
     function mostrarResposta() {
         setEnunciado(answer)
         setOcultar(true)
-
     }
     function responderPergunta(resposta) {
         setOcultar(false)
@@ -39,20 +37,20 @@ export default function Card({ question, answer, index, perguntasRespondidas, se
         setRespondida(true)
         setEnunciado(`Pergunta ${index}`)
         setPerguntasRespondidas([...perguntasRespondidas, index])
-        if (resposta === "Zap!") {
-            setDataTestImg("zap-icon")
-            setIcone(certo)
-            setCorDoTexto("#2FBE34")
+        if(resposta === "Não lembrei"){
+            setDataTestImg("no-icon")
+            setIcone(errado)
+            setCorDoTexto("#FF3030")
         }
         if (resposta === "Quase não lembrei") {
             setDataTestImg("partial-icon")
             setIcone(quase)
             setCorDoTexto("#FF922E")
         }
-        if(resposta === "Não lembrei"){
-            setDataTestImg("no-icon")
-            setIcone(errado)
-            setCorDoTexto("#FF3030")
+        if (resposta === "Zap!") {
+            setDataTestImg("zap-icon")
+            setIcone(certo)
+            setCorDoTexto("#2FBE34")
         }
     }
 
@@ -61,7 +59,7 @@ export default function Card({ question, answer, index, perguntasRespondidas, se
             <p data-test={"flashcard-text"} >{enunciado}</p>
             <img src={icone} data-test={dataTestImg} onClick={mostrarPergunta} alt="seta" />
             <Botoes setaVirada={setaVirada} ocultar={ocultar} >
-              {botoes.map((b) => <Button cor={b.cor} data-test={b.dataTest} onClick={() => responderPergunta(b.texto)} texto={b.texto}/>)}
+                {botoes.map((b) => <Button cor={b.cor} onClick={() => responderPergunta(b.texto)}  texto={b.texto} key={b.cor} />)}
             </Botoes>
         </Pergunta>
     )

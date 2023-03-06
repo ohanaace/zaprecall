@@ -1,10 +1,10 @@
-import styled from "styled-components";
-
-export default function Button({texto, cor, dataTest, onClick}){
+import styled from "styled-components"
+export default function Button({cor, texto, onClick}){
     return (
-        <Botao cor={cor} data-test={dataTest} onClick={onClick}>{texto}</Botao>
+        <Botao cor={cor} onClick={onClick}>{texto}</Botao>
     )
 }
+
 const Botao = styled.button`
     width: 86px;
     height: 37px;
