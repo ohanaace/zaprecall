@@ -1,4 +1,3 @@
-import Perguntas from "./Card"
 import Cabecalho from "./Cabecalho"
 import Rodape from "./Rodape"
 import Card from "./Card"
@@ -10,8 +9,16 @@ export default function Container() {
     return (
         <>
             <Cabecalho />
-            {cards.map((c) => <Card perguntasRespondidas={perguntasRespondidas} setPerguntasRespondidas={setPerguntasRespondidas} question={c.question} answer={c.answer} index={c.index} key={c.index}/>)}
-            <Rodape perguntasRespondidas={perguntasRespondidas} totalDePerguntas={totalDePerguntas}/>
+            {cards.map((c, i) => <Card
+                perguntasRespondidas={perguntasRespondidas}
+                setPerguntasRespondidas={setPerguntasRespondidas}
+                question={c.question}
+                answer={c.answer}
+                index={i}
+                key={i} />)}
+            <Rodape
+                perguntasRespondidas={perguntasRespondidas}
+                totalDePerguntas={totalDePerguntas} />
         </>
     )
 }

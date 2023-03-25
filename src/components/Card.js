@@ -11,7 +11,7 @@ export default function Card({ question, answer, index, perguntasRespondidas, se
     const [icone, setIcone] = useState(play)
     const [setaVirada, setSetaVirada] = useState(false)
     const [ocultar, setOcultar] = useState(false)
-    const [enunciado, setEnunciado] = useState("Pergunta " + index)
+    const [enunciado, setEnunciado] = useState(`Pergunta ${index + 1}`)
     const [respondida, setRespondida] = useState(false)
     const [dataTestImg, setDataTestImg] = useState("play-btn")
     const [corDoTexto, setCorDoTexto] = useState("#000000")
